@@ -1,0 +1,4 @@
+new;
+pfmh_data=loadd("pfmh_data.gdat");
+call dstatmt(pfmh_data, "rev + exp + pb + debt");
+print "Computing complete.";

@@ -1,0 +1,71 @@
+new;
+cls; 
+
+// --- Data Loading ---
+pfmh_data = loadd("pfmh_data.gdat");
+recession_data = loadd("recession_data.gdat");
+
+// --- Data Extraction ---
+dt = pfmh_data[.,"year"];
+debt_data = pfmh_data[.,"debt"];
+pb_data = pfmh_data[.,"pb"];
+
+
+// --- Plot Setup ---
+plotCanvasSize("mm", 120|85,300);
+struct plotControl plt;
+plt = plotGetDefaults("xy");
+
+// --- General plot settings ---
+plotSetFonts(&plt, "all", "times new roman", 14);
+plotSetXLabel(&plt, "Years");
+ plotSetXTicInterval(&plt, 5, asdate("1950"));
+plotSetActiveY(&plt, "left")
+    plotSetYLabel(&plt, "Debt, Percent of GDP");
+    plotSetYTicInterval(&plt, 25, -25);
+    plotSetYGridPen(&plt, "major", 1, "Light Grey", 1); 
+    plotSetYRange(&plt, 0, 100);
+plotSetActiveY(&plt, "right");
+    plotSetYLabel(&plt, "PB, Percent of GDP");
+    plotSetYTicInterval(&plt, 5, -10 );
+    plotSetYGridPen(&plt, "major", 1, "Light Grey", 1); 
+    plotSetYRange(&plt, -10, 10);
+
+  
+//--- Set Legend ---
+plotSetLegendFont(&plt, "times new roman", 14);
+
+    
+
+// --- Plot Line 1: debt_data (Solid Red) ---
+ plotSetWhichYAxis(&plt, "left");
+plotSetLineColor(&plt, "red");
+plotSetLineStyle(&plt, 1);
+plotSetLegend(&plt, "Debt/GDP", "inside top left", 1)
+plotTSHF(plt, dt, "years", debt_data);
+
+
+// --- Plot Line 2: pb_data (Solid Blue) ---
+ plotSetWhichYAxis(&plt, "right");
+plotSetLineColor(&plt, "blue");
+plotSetLineStyle(&plt, 1);
+plotSetLegend(&plt, "PB/GDP", "inside top left", 1)
+plotAddTSHF(plt, dt, "years", pb_data);
+
+
+// --- Plot Line 3: Horizontal Line at 0 (Solid Grey) ---
+plotSetLineColor(&plt, "gray"); 
+plotSetLineStyle(&plt, 1);    
+plotSetLegend(&plt, "");
+plotAddHLine(plt, 0);
+
+// --- Add recession bar (using a separate plotControl for bar styling) ---
+struct plotControl plt;
+plt= plotGetDefaults("bar");
+plotSetLineColor(&plt, "#ECECEC");
+plotSetFill(&plt, 1, 0.15, "grey"); 
+plotSetLegend(&plt, "Recesssion", "inside top left", 1);
+plotAddVBar(plt, recession_data);
+
+plotsave("figure_1.png", 10|7, "cm", 300);
+print "Plotting complete.";

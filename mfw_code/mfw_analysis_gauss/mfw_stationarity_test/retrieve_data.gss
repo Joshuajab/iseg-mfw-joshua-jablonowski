@@ -1,0 +1,13 @@
+//Retrieve Data
+new;
+pfmh_data = loadd("/Users/joshua/Documents/master_final_work/mfw_data/pfmh_data.xlsx", ". + date($year, '%Y') - country - isocode");
+pfmh_data = selif(pfmh_data, (pfmh_data[., "ifscode"] .== 134 .and pfmh_data[., "year"] .>= "1949-12-31"));
+call saved(pfmh_data, "pfmh_data.gdat");
+
+recession_data = loadd("/Users/joshua/Documents/master_final_work/mfw_data/recession_data.xlsx");
+call saved(recession_data, "recession_data.gdat");
+
+
+delta_pfmh = pdDiff(pfmh_data, 1, 1, 0, "ifscode", "year");
+call saved(delta_pfmh, "delta_pfmh.gdat");
+

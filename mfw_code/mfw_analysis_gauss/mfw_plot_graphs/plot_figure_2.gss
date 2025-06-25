@@ -1,0 +1,51 @@
+new;
+cls;
+
+// --- Data Loading ---
+pfmh_data = loadd("pfmh_data.gdat");
+recession_data = loadd("recession_data.gdat"); 
+
+// --- Data Extraction for Plot 2 ---
+dt_plot2 = pfmh_data[.,"year"];
+rev_data = pfmh_data[.,"rev"];
+exp_data = pfmh_data[.,"exp"];
+
+// --- Plot Setup for Plot 2 ---
+plotCanvasSize("mm", 120|85,300); 
+struct plotControl plt_plot2;
+plt_plot2 = plotGetDefaults("xy");
+
+// --- General plot settings for Plot 2 ---
+plotSetFonts(&plt_plot2, "all", "times new roman", 14);
+plotSetXLabel(&plt_plot2, "Years");
+plotSetYLabel(&plt_plot2, "Percent of GDP");
+plotSetXTicInterval(&plt_plot2, 5, asdate("1950"));
+plotSetYRange(&plt_plot2, 0, 100);     
+plotSetYTicInterval(&plt_plot2, 25, 0); 
+plotSetYGridPen(&plt_plot2, "major", 1, "Light Grey", 1);
+
+
+// --- Plot Line 1 (Plot 2): rev_data (e.g., Dark Green) ---
+plotSetLineColor(&plt_plot2, "darkgreen");
+plotSetLineStyle(&plt_plot2, 1); // Solid line
+plotSetLegend(&plt_plot2, "Revenue/GDP", "inside top left", 1);
+plotTSHF(plt_plot2, dt_plot2, "years", rev_data); 
+
+// --- Plot Line 2 (Plot 2): exp_data (e.g., Dark Orange) ---
+plotSetLineColor(&plt_plot2, "darkorange");
+plotSetLineStyle(&plt_plot2, 1); 
+plotSetLegend(&plt_plot2, "Expenditure/GDP", "inside top left", 1);
+plotAddTSHF(plt_plot2, dt_plot2, "years", exp_data); 
+
+// --- Add recession bar (using a separate plotControl for bar styling, similar to reference) ---
+struct plotControl plt_recession_bars; 
+plt_recession_bars = plotGetDefaults("bar");
+plotSetFill(&plt_recession_bars, 1, 0.15, "grey"); 
+plotSetLineColor(&plt_recession_bars, "#ECECEC");
+plotSetLegend(&plt_recession_bars, "Recession", "inside top left", 1);
+plotAddVBar(plt_recession_bars, recession_data); 
+
+
+// --- Save Plot 2 ---
+plotsave("figure_2.png", 10|7, "cm", 300);
+print "Plot 2 ('figure_2.png') created successfully.";

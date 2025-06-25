@@ -1,0 +1,62 @@
+new;
+cls;
+
+library carrionlib;
+
+/*
+** This section loads data
+** note this test is a time series test
+** we will test each individual in the panel
+** separately
+*/
+// Here we load all data for testing
+// Note that this dataset is stacked
+// and the cadfcoin_multiple procedure
+// requires wide panel data
+y=loadd("delta_pfmh.gdat");
+y=selif(y, (y[.,"year"].>= "1950-12-31"));
+y = y[., "debt"];
+t = rows(y);
+
+/*
+** This section sets parameters 
+** for testing.
+*/
+// Set up control structure
+struct msburControl msburCtl;
+msburCtl = msburControlCreate();
+
+// Number of breaks
+msburCtl.numberBreaks = 3;
+
+// Model to use
+model = 3;
+
+/*
+** Estimation method
+** when = 1 we use the algorithm, 
+** and = 0 brut force
+*/
+msburCtl.estimation = 1;
+msburCtl.maxIters = 20;
+
+// Output structure
+struct msburOut msOut;
+msOut = msbur_gls(y, model, msburCtl);
+
+@+++++++++++++++++++++++++++++@
+@ Compute the critical values @
+@+++++++++++++++++++++++++++++@
+
+lam = (msOut.min_tb/T)|zeros(4, 1); @ Only one break @
+{critical_msb, critical_mza, critical_mzt, critical_pt} = msbur_rs(lam, msOut.cbar);
+
+print "Test statistics and critical values (5%  and 1% level of significance)";
+
+print "PT test   " msOut.pt "cv(5%): " critical_pt[3] "cv(1%): " critical_pt[1];
+print "MPT test  " msOut.mpt "cv(5%): " critical_pt[3] "cv(1%): " critical_pt[1];
+print "ADF test  " msOut.adf "cv(5%): " critical_mzt[3] "cv(1%): " critical_mzt[1];
+print "ZA test   " msOut.za "cv(5%): " critical_mza[3] "cv(1%): " critical_mza[1];
+print "MZA test  " msOut.mza "cv(5%): " critical_mza[3] "cv(1%): " critical_mza[1];
+print "MSB test  " msOut.msb "cv(5%): " critical_msb[3] "cv(1%): " critical_msb[1];
+print "MZT test  " msOut.mzt "cv(5%): " critical_mzt[3] "cv(1%): " critical_mzt[1];
