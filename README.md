@@ -13,7 +13,7 @@ This paper investigates fiscal sustainability and the prevailing fiscal regime i
 
 ### About this Repository
 
-This repository serves as the official online appendix for the Master's thesis "Fiscal Regimes and Sustainability: Insights from Post-War Germany (1950-2023)". It contains all the data, R code, GAUSS code, and output necessary to reproduce the empirical analysis presented in the paper.
+This repository serves as the online appendix for the Master's thesis "Fiscal Regimes and Sustainability: Insights from Post-War Germany (1950-2023)". It contains all the data, R code, GAUSS code, and output necessary to reproduce the empirical analysis presented in the paper.
 
 ### Repository Structure
 
@@ -35,7 +35,7 @@ To reproduce the results, please run the scripts in the following order. All R s
 
 Part 1: Unit Root Tests (GAUSS)
 
-The Carrion-i-Silvestre et al. (2009) unit root tests, the results of which are reported in **Table** II of the thesis, were performed externally using GAUSS.
+The Carrion-i-Silvestre et al. (2009) unit root tests, the results of which are reported in **Table II** of the thesis, were performed externally using GAUSS.
 1. **Software:** Requires GAUSS statistical software.
 2. **Code Location:** The main test scripts are located in `/mfw_code/mfw_analysis_gauss/mfw_stationarity_test/`.
 3. **Input Data:** The scripts load data from `.gdat` files located in the same folder. These `.gdat` files are generated from the primary data source (`pfmh_data.xlsx`) using the `retrieve_data.gss` helper script.
@@ -67,8 +67,8 @@ All scripts are located in `/mfw_code/mfw_analysis_r/mfw_lprfs/`.
 ### System and Software Requirements
 
 The analysis was conducted using the following software:
-- **R version 4.3.3**
-- **GAUSS** (for unit root tests)
+- **R version 4.3.2**
+- **GAUSS version 25.0.1** 
 
 To ensure full reproducibility in R, please install the following packages:
 
